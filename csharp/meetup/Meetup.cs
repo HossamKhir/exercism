@@ -21,41 +21,30 @@ public class Meetup
     public DateTime Day(DayOfWeek dayOfWeek, Schedule schedule)
     {
         // throw new NotImplementedException("You need to implement this function.");
-        while (Date.DayOfWeek != dayOfWeek)
-        {
-            Date = Date.AddDays(1);
-        }
+        int day;
         switch (schedule)
         {
-            case Schedule.Fourth:
-                Date = Date.AddDays(21);
-                break;
-            case Schedule.Third:
-                Date = Date.AddDays(14);
+            case Schedule.First:
+                day = 1;
                 break;
             case Schedule.Second:
-                Date = Date.AddDays(7);
+                day = 8;
                 break;
-            case Schedule.First:
+            case Schedule.Third:
+                day = 15;
                 break;
-            case Schedule.Last:
-                Date = new DateTime(Date.Year, Date.Month, 1);
-                Date = Date.AddMonths(1);
-                do
-                {
-                    Date = Date.AddDays(-1);
-                } while (Date.DayOfWeek != dayOfWeek);
+            case Schedule.Fourth:
+                day = 22;
                 break;
             case Schedule.Teenth:
-                Date = new DateTime(Date.Year, Date.Month, 13);
-                while (Date.DayOfWeek != dayOfWeek)
-                {
-                    Date = Date.AddDays(1);
-                }
+                day = 13;
                 break;
             default:
-                return Date;
+                day = DateTime.DaysInMonth(Date.Year, Date.Month) - 6;
+                break;
         }
-        return Date;
+        DateTime firstDay = new DateTime(Date.Year, Date.Month, day);
+        day = (dayOfWeek - firstDay.DayOfWeek + 7) % 7;
+        return firstDay.AddDays(day);
     }
 }
