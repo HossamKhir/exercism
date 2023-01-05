@@ -23,32 +23,46 @@ public static class ProteinTranslation
         {"UAG", "STOP"},
         {"UGA", "STOP"},
     };
-    public static string[] Proteins(string strand)
+
+    public static string[] Proteins(string strand) => strand
+    .Chunk(3)
+    .Select(codon => MAP[codon])
+    .TakeWhile(protein => protein != "STOP")
+    .ToArray();
+    // {
+    //     // throw new NotImplementedException();
+    //     // INFO: LINQ approach 1
+    //     return strand
+    //     .Select((_, i) => i)
+    //     .Where(i => i % 3 == 0)
+    //     .Select(i => MAP[strand.Substring(i, 3)])
+    //     .TakeWhile(protein => protein != "STOP")
+    //     .ToArray();
+    //     // List<string> result = new List<string>();
+    //     // for (int i = 0; i < strand.Length; i += 3)
+    //     // {
+    //     //     var codon = strand.Substring(i, 3);
+    //     //     // var protein = MAP[codon];
+    //     //     var protein = ToProtein(codon);
+    //     //     if (protein == "STOP")
+    //     //     {
+    //     //         return result.ToArray();
+    //     //     }
+    //     //     else
+    //     //     {
+    //     //         result.Add(protein);
+    //     //     }
+    //     // }
+    //     // return result.ToArray();
+    // }
+
+    // INFO: yield approach
+    private static IEnumerable<string> Chunk(this string str, int size)
     {
-        // throw new NotImplementedException();
-        // INFO: LINQ approach 1
-        return strand
-        .Select((_, i) => i)
-        .Where(i => i % 3 == 0)
-        .Select(i => MAP[strand.Substring(i, 3)])
-        .TakeWhile(protein => protein != "STOP")
-        .ToArray();
-        // List<string> result = new List<string>();
-        // for (int i = 0; i < strand.Length; i += 3)
-        // {
-        //     var codon = strand.Substring(i, 3);
-        //     // var protein = MAP[codon];
-        //     var protein = ToProtein(codon);
-        //     if (protein == "STOP")
-        //     {
-        //         return result.ToArray();
-        //     }
-        //     else
-        //     {
-        //         result.Add(protein);
-        //     }
-        // }
-        // return result.ToArray();
+        for (int i = 0; i < str.Length; i += size)
+        {
+            yield return str[i..(i + size)];
+        }
     }
 
     // INFO: switch approach
