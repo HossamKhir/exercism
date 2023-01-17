@@ -2,3 +2,5 @@
 **/.exercism
 **/bin
 **/obj
+**/node_modules
+**/yarn-error.log
